@@ -4,7 +4,8 @@
             var randomsize=[];
             var X,Y,height,width,arraysize,canvas,ctx;
             var i,min_idx,j;
-
+            var flag=true;
+            var req;
 
             function draw()
             {
@@ -44,18 +45,21 @@
                     for (j = i+1; j < randomsize.length; j++)  
                     {
                         beforecolor();
-                        //setTimeout(aftercolor,1000);
+                        //sleep(200);
                         aftercolor();
-                        //setTimeout(nothing,1000);
-                        nothing();   
                     }
-                    //setTimeout(comingout,2000*(randomsize.length-i-1));
                     comingout();
-                }  
-            
+                } 
             }
 
+            function sleep(miliseconds) {
+            var currentTime = new Date().getTime();
+
+            while (currentTime + miliseconds >= new Date().getTime()) {
             
+            }
+            }
+
             function beforecolor()
             {
                 X=(canvas.width-100)/arraysize*(j+1);
@@ -63,12 +67,10 @@
                 width=(canvas.width-100)/arraysize;
                 ctx.fillStyle="green";
                 ctx.fillRect(X+1,Y,width-1,randomsize[j]);
-                
-            }
+           }
 
             function aftercolor()
             {
-                
                 X=(canvas.width-100)/arraysize*(j+1);
                 Y=50;
                 width=(canvas.width-100)/arraysize;
@@ -78,10 +80,6 @@
                 ctx.fillStyle="red";
                 
                 ctx.fillRect(X+1,Y,width-1,randomsize[j]);
-            }
-
-            function nothing()
-            {
                 
             }
             
