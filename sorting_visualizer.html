@@ -1,0 +1,114 @@
+<html>
+    <head>
+        <style>
+            label{
+                color: blanchedalmond;
+            }
+            .listitem{
+                position: relative;
+                background-color: blue;
+                float: left;
+                margin-left: 1px;
+                margin-top: 50px;
+                display: inline-block;
+            }
+        </style>
+        
+        <script>
+        var arraysize;
+        var mylist;
+        var listitem;
+        var text;
+        var height=[];
+        var list=[];
+        
+        function draw()
+        {
+            arraysize=document.getElementById("arraysize").value;
+            mylist=document.getElementById("mylist");
+            
+            for(i=0;i<arraysize;i++)
+            {   
+                listitem=document.createElement("LI");
+                height[i]=Math.floor((Math.random() * (500) + 1));
+                text=document.createTextNode(" ");
+                listitem.appendChild(text);
+                listitem.className='listitem';
+                var k=(i/2)+"s";
+                listitem.style.animationDelay=k;
+                listitem.style.width=((screen.width-100)/arraysize)-1 ;
+                listitem.style.height=height[i];
+                mylist.appendChild(listitem);
+            }
+        }
+
+        function reset()
+        {
+            mylist=document.getElementById("mylist");
+            while(mylist.hasChildNodes())
+            {
+                mylist.removeChild(mylist.firstChild);
+            }
+        }
+
+        async function onsort()
+        {
+            mylist=document.getElementById("mylist");
+            list=mylist.getElementsByTagName("li");
+            var i, j, min_idx,k=0;;  
+            var n=height.length;
+            for (i = 0; i < n; i++)  
+            {       
+            min_idx = i;  
+            for (j = i+1; j < n; j++)  
+            {   
+                await color(j,list);
+                if (height[j] < height[min_idx])  
+                    min_idx = j;  
+            }    
+            await swap(i,min_idx,height,list);
+            }  
+        }
+
+        async function color(j,list)
+        {
+            list[j].style.backgroundColor="red";
+            await sleep(0.0000001);
+            list[j].style.backgroundColor="blue";
+        }
+
+        async function swap(i,min_idx,height,list)
+        {
+
+            await sleep(0.00001);
+            var temp=height[i];
+            height[i]=height[min_idx];
+            height[min_idx]=temp;
+            list[i].style.height=height[i];
+            list[min_idx].style.height=height[min_idx];
+            list[i].style.backgroundColor="green";         
+        }
+
+        function sleep (ms)
+        {
+            return new Promise(resolve=> setTimeout(resolve,ms));
+        }
+
+    </script>
+
+    </head>
+    <body bgcolor="black">
+        <label for="arraysize">Size</label>
+        <input type="number" id="arraysize" name="arraysize"><br>
+        <input type="button" id="submit" name="submit" onclick="draw()" value="submit" >
+        <input type="button" id="clear" name="clear" onclick="reset()" value="clear" ><br>
+        <input type="button" id="sort" name="sort" onclick="onsort()" value="sort" ><br>
+        
+        <div>
+
+            <ul id ="mylist">
+            </ul>
+ 
+        </div>
+    </body>
+</html>
