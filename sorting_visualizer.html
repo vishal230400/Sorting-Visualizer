@@ -1,9 +1,9 @@
 <html>
     <head>
+        <title>Sorting-Visualizer</title>
+        <link rel="icon" href="sorting.jpg"/>
         <style>
-            label{
-                color: blanchedalmond;
-            }
+
             .listitem{
                 position: relative;
                 background-color: blue;
@@ -12,18 +12,47 @@
                 margin-top: 50px;
                 display: inline-block;
             }
+            .slidecontainer{
+                float: left;
+                margin: 2px;
+            }
+            .item{
+                margin: 2px;
+                border-color: black;
+                background-color: black;
+                color:blanchedalmond;
+            }
+
+            .heading{
+                color: blanchedalmond;
+                float: left;
+            }
+
+            
+            .afterpagename{
+                color: blanchedalmond;
+                float: left;
+                margin-left: 350px;
+            }
+
         </style>
         
-        <script>
+        <script type="text/javascript">
         var arraysize;
         var mylist;
         var listitem;
         var text;
         var height=[];
         var list=[];
+        var otheron=0;
         
-        function draw()
+        async function draw()
         {
+            if(otheron==0)
+            {
+            otheron=1;
+            await reset();
+            //alert("coming back");
             arraysize=document.getElementById("arraysize").value;
             mylist=document.getElementById("mylist");
             
@@ -39,34 +68,74 @@
                 listitem.style.width=((screen.width-100)/arraysize)-1 ;
                 listitem.style.height=height[i];
                 mylist.appendChild(listitem);
+                otheron=0;
+            }
+            }
+            else 
+            {
+                if(otheron==1)
+                    alert("Wait for the previous request for array creation to finish");
+                if(otheron==2)
+                    alert("Wait for the previous request for Selection Sort to finish");
+                if(otheron==3)
+                    alert("Wait for the previous request for Bubble Sort to finish");
+                if(otheron==4)
+                    alert("Wait for the previous request for Insertion Sort to finish");        
+                if(otheron==5)
+                    alert("Wait for the previous request for  Merge Sort to finish");
+                if(otheron==6)
+                    alert("Wait for the previous request for Quick Sort to finish");    
             }
         }
 
-        function reset()
+        async function reset()
         {
+            //alert("going");
             mylist=document.getElementById("mylist");
-            while(mylist.hasChildNodes())
+            var n=mylist.childNodes.length;
+            for(i=0;i<n;i++)
             {
-                mylist.removeChild(mylist.firstChild);
+                //alert(mylist.childNodes.length);
+                mylist.removeChild(mylist.firstChild);    
             }
         }
 
         async function selsort()
         {
-            mylist=document.getElementById("mylist");
-            list=mylist.getElementsByTagName("li");
-            var i, j, min_idx,k=0;;  
-            var n=height.length;
-            for (i = 0; i < n; i++)  
-            {       
-            min_idx = i;  
-            for (j = i+1; j < n; j++)  
-            {   
-                await color(j,list);
-                if (height[j] < height[min_idx])  
-                    min_idx = j;  
-            }    
-            await swap(i,min_idx,height,list);
+            if(otheron==0)
+            {
+                otheron=2;
+                mylist=document.getElementById("mylist");
+                list=mylist.getElementsByTagName("li");
+                var i, j, min_idx,k=0;;  
+                var n=height.length;
+                for (i = 0; i < n; i++)  
+                {       
+                    min_idx = i;  
+                    for (j = i+1; j < n; j++)  
+                    {   
+                        await color(j,list);
+                        if (height[j] < height[min_idx])  
+                            min_idx = j;  
+                    }    
+                    await swap(i,min_idx,height,list);
+                }
+                otheron=0;
+            }
+            else 
+            {
+                if(otheron==1)
+                    alert("Wait for the previous request for array creation to finish");
+                if(otheron==2)
+                    alert("Wait for the previous request for Selection Sort to finish");
+                if(otheron==3)
+                    alert("Wait for the previous request for Bubble Sort to finish");
+                if(otheron==4)
+                    alert("Wait for the previous request for Insertion Sort to finish");        
+                if(otheron==5)
+                    alert("Wait for the previous request for  Merge Sort to finish");
+                if(otheron==6)
+                    alert("Wait for the previous request for Quick Sort to finish");    
             }  
         }
 
@@ -95,16 +164,37 @@
 
         function bubsort()
         {
-            list=document.getElementById("mylist").getElementsByTagName("li");
-            bubblesort(list,height,height.length);
+            if(otheron==0)
+            {
+                otheron=3;
+                list=document.getElementById("mylist").getElementsByTagName("li");
+                bubblesort(list,height,height.length);
+            }
+            else 
+            {
+                if(otheron==1)
+                    alert("Wait for the previous request for array creation to finish");
+                if(otheron==2)
+                    alert("Wait for the previous request for Selection Sort to finish");
+                if(otheron==3)
+                    alert("Wait for the previous request for Bubble Sort to finish");
+                if(otheron==4)
+                    alert("Wait for the previous request for Insertion Sort to finish");        
+                if(otheron==5)
+                    alert("Wait for the previous request for  Merge Sort to finish");
+                if(otheron==6)
+                    alert("Wait for the previous request for Quick Sort to finish");    
+            }
         }
 
         async function bubblesort(list,height,n)
         {
 
             if (n == 1) 
+            {
+            otheron=0;
             return; 
-            
+            }
             for (i=0; i<n-1; i++) 
             {
             for(j=0;j<n-i-1;j++)   
@@ -118,7 +208,6 @@
 
             list[0].style.backgroundColor="green";
         }
-
 
         async function bubswap(list,height,i)
         {
@@ -136,25 +225,277 @@
             list[i+1].style.backgroundColor="blue";
         }
 
+        async function inssort()
+        {
+            if(otheron==0)
+            {
+                otheron=4;
+                list=document.getElementById("mylist").getElementsByTagName("li");
+                n=list.length;
+                for (i = 1; i < n; i++) 
+                {  
+                    key = height[i];  
+                    j = i - 1;  
+
+                    while (j >= 0 && height[j] > key) 
+                    {  
+                        height[j + 1] = height[j];
+                        list[j+1].style.height=height[j+1];
+                        list[j+1].style.backgroundColor="orange";
+                        list[j].style.backgroundColor="pink";  
+                        await sleep(5);
+                        list[j].style.backgroundColor="blue";
+                        list[j+1].style.backgroundColor="blue";  
+                        j = j - 1;  
+                    }  
+                    
+                    height[j + 1] = key;
+                    list[j+1].style.height=height[j+1];
+                    var k=0;
+                    
+                    while(k<=j+1)
+                    {
+                        await sleep(1);
+                        list[k].style.backgroundColor="green";    
+                        k++;
+                    } 
+            }      
+    
+                while(n)
+                {
+                    list[n-1].style.backgroundColor="green";
+                    n--;
+                }
+                otheron=0;
+            }
+            else 
+            {
+                if(otheron==1)
+                    alert("Wait for the previous request for array creation to finish");
+                if(otheron==2)
+                    alert("Wait for the previous request for Selection Sort to finish");
+                if(otheron==3)
+                    alert("Wait for the previous request for Bubble Sort to finish");
+                if(otheron==4)
+                    alert("Wait for the previous request for Insertion Sort to finish");        
+                if(otheron==5)
+                    alert("Wait for the previous request for  Merge Sort to finish");
+                if(otheron==6)
+                    alert("Wait for the previous request for Quick Sort to finish");    
+            }                
+        }
+
+        async function mersort()
+        {
+            if(otheron==0)
+            {
+                otheron=5;
+                mylist=document.getElementById("mylist");
+                list=mylist.getElementsByTagName("li");
+                await mergesort(list,height,0,height.length-1);
+                otheron=0;
+            }
+            else 
+            {
+                if(otheron==1)
+                    alert("Wait for the previous request for array creation to finish");
+                if(otheron==2)
+                    alert("Wait for the previous request for Selection Sort to finish");
+                if(otheron==3)
+                    alert("Wait for the previous request for Bubble Sort to finish");
+                if(otheron==4)
+                    alert("Wait for the previous request for Insertion Sort to finish");        
+                if(otheron==5)
+                    alert("Wait for the previous request for  Merge Sort to finish");
+                if(otheron==6)
+                    alert("Wait for the previous request for Quick Sort to finish");    
+            }
+        }
+
+        async function mergesort(list,height,l,r)
+        {
+            if(l<r)
+            {
+                var mid=parseInt((l+r)/2);
+                await mergesort(list,height,l,mid);
+                await mergesort(list,height,mid+1,r);
+                await merge(list,height,l,mid,r);
+            }
+        }
+
+        async function merge(list,height,l,m,r)
+        {
+            //alert('coming');
+            //alert(l+" "+m+" "+r);
+            var i, j, k; 
+            var n1 = m - l + 1; 
+            var n2 =  r - m; 
+            //alert(n1+" "+n2);
+            var L=[], R=[]; 
+  
+            for (i = 0; i < n1; i++) 
+                L[i] = height[l + i]; 
+            for (j = 0; j < n2; j++) 
+                R[j] = height[m + 1+ j]; 
+  
+            i = 0;  
+            j = 0;  
+            k = l;  
+        
+        while (i < n1 && j < n2) 
+        { 
+            //list[l+i].style.backgroundColor="red";
+            //list[j+m+1].style.backgroundColor="yellow";
+            //await sleep(2000);
+                
+            if (L[i] <= R[j]) 
+            { 
+                height[k] = L[i];
+                list[k].style.height=height[k]; 
+                i++; 
+            } 
+            else
+            { 
+                height[k] = R[j];
+                list[k].style.height=height[k]; 
+                j++; 
+            }
+
+            list[k].style.backgroundColor="pink";
+            await sleep(15);
+            k++; 
+        } 
+        
+        while (i < n1) 
+        { 
+            list[k].style.backgroundColor="pink";
+            //await sleep(2000);
+            height[k] = L[i]; 
+            list[k].style.height=height[k];
+            await sleep(15);
+            i++; 
+            k++; 
+        } 
+  
+        while (j < n2) 
+        { 
+            list[k].style.backgroundColor="pink";
+            
+            height[k] = R[j]; 
+            list[k].style.height=height[k]; 
+            await sleep(15);
+            k++; 
+            j++;
+        }
+        }
+
+        async function quisort()
+        {
+            if(otheron==0)
+            {
+                otheron=6;
+                mylist=document.getElementById("mylist");
+                list=mylist.getElementsByTagName("li");
+                await quicksort(list,height,0,height.length-1);
+                otheron=0;
+            }
+            else 
+            {
+                if(otheron==1)
+                    alert("Wait for the previous request for array creation to finish");
+                if(otheron==2)
+                    alert("Wait for the previous request for Selection Sort to finish");
+                if(otheron==3)
+                    alert("Wait for the previous request for Bubble Sort to finish");
+                if(otheron==4)
+                    alert("Wait for the previous request for Insertion Sort to finish");        
+                if(otheron==5)
+                    alert("Wait for the previous request for  Merge Sort to finish");
+                if(otheron==6)
+                    alert("Wait for the previous request for Quick Sort to finish");    
+            }
+        }
+        
+        async function quicksort(list,height,l,h)
+        {
+            if (l < h)  
+            {  
+
+            //alert(l+" "+h);    
+            
+            let par=await partition(list,height, l, h);  
+            
+            await quicksort(list,height, l,  par-1);  
+            
+            await quicksort(list,height, par + 1, h);  
+            }  
+            if(l==h)
+                list[l].style.backgroundColor="pink";
+        }
+
+        async function partition(list,height,l,h)
+        {
+      
+            var pivot = height[h];  
+            i = (l - 1);  
+  
+            for (j = l; j <= h - 1; j++)  
+            {  
+                if (height[j] < pivot)  
+                {  
+                    i++; 
+                    var temp=height[j];
+                    height[j]=height[i];
+                    height[i]=temp;
+                    list[i].style.backgroundColor="yellow";
+                    list[j].style.backgroundColor="yellow";
+                    list[i].style.height=height[i];
+                    list[j].style.height=height[j];  
+                    await sleep(20);
+                    list[i].style.backgroundColor="blue";
+                    list[j].style.backgroundColor="blue";
+                }  
+            }  
+
+            temp=height[h];
+            height[h]=height[i+1];
+            height[i+1]=temp;
+            list[i+1].style.backgroundColor="pink";
+            list[i+1].style.height=height[i+1];
+            list[h].style.height=height[h];  
+        
+            await sleep(10);
+            
+            return (i+1);
+        }
+
     </script>
 
     </head>
     <body bgcolor="black">
-        <label for="arraysize">Size</label>
-        <input type="number" id="arraysize" name="arraysize"><br>
-        <input type="button" id="submit" name="submit" onclick="draw()" value="submit" >
-        <input type="button" id="clear" name="clear" onclick="reset()" value="clear" ><br>
-        <input type="button" id="selectionsort" name="selectionsort" onclick="selsort()" value="Selection Sort" >
-        <input type="button" id="bubblesort" name="bubblesort" onclick="bubsort()" value="Bubble Sort" >
-        <input type="button" id="insertionsort" name="insertionsort" onclick="inssort()" value="Insertion Sort" >
-        <input type="button" id="mergesort" name="mergesort" onclick="mersort()" value="Merge Sort" >
+        <div>
+            <h class="heading"><b>Sorting-Visualizer:</b></h>
+            <br>
+            <br>
+            <h class="afterpagename">Size:</h>
+        <div class="slidecontainer">
+            <input type="range"  onclick="draw()" min="5" max="450" value="5" class="slider" id="arraysize">
+        </div>
+        <input class="item" type="button" id="selectionsort" name="selectionsort" onclick="selsort()" value="Selection Sort" >
+        <input class="item" type="button" id="bubblesort" name="bubblesort" onclick="bubsort()" value="Bubble Sort" >
+        <input class="item" type="button" id="insertionsort" name="insertionsort" onclick="inssort()" value="Insertion Sort" >
+        <input class="item" type="button" id="mergesort" name="mergesort" onclick="mersort()" value="Merge Sort" >
+        <input class="item" type="button" id="quicksort" name="quicksort" onclick="quisort()" value="Quick Sort" >
+    </div>
         <br>
         
-        <div>
+        <div >
 
             <ul id ="mylist">
             </ul>
- 
         </div>
+        <script type="text/javascript">
+            draw();
+        </script>
     </body>
 </html>
