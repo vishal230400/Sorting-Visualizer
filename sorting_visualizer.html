@@ -162,13 +162,14 @@
             return new Promise(resolve=> setTimeout(resolve,ms));
         }
 
-        function bubsort()
+        async function bubsort()
         {
             if(otheron==0)
             {
                 otheron=3;
                 list=document.getElementById("mylist").getElementsByTagName("li");
-                bubblesort(list,height,height.length);
+                let a=await bubblesort(list,height,height.length);
+                otheron=0;
             }
             else 
             {
@@ -192,8 +193,8 @@
 
             if (n == 1) 
             {
-            otheron=0;
-            return; 
+                //otheron=0;
+                return; 
             }
             for (i=0; i<n-1; i++) 
             {
